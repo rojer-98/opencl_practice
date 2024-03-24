@@ -3,24 +3,16 @@ use std::ptr;
 use anyhow::{anyhow, Result};
 use opencl3::{
     command_queue::{CommandQueue, CL_QUEUE_PROFILING_ENABLE},
-    context::Context,
-    device::{get_all_devices, Device, CL_DEVICE_TYPE_GPU},
     kernel::{ExecuteKernel, Kernel},
     memory::{Buffer, CL_MEM_READ_ONLY, CL_MEM_WRITE_ONLY},
     program::Program,
     types::{cl_event, cl_float, CL_BLOCKING, CL_NON_BLOCKING},
 };
 
-pub fn basic(kernel_name: &str, source: &str) -> Result<()> {
-    // Find a usable device for this application
-    let device_id = *get_all_devices(CL_DEVICE_TYPE_GPU)
-        .expect("Get all devices")
-        .first()
-        .ok_or(anyhow!("No device found in platform"))?;
-    let device = Device::new(device_id);
+use crate::common::get_device_context;
 
-    // Create a Context on an OpenCL device
-    let context = Context::from_device(&device)?;
+pub fn basic(kernel_name: &str, source: &str) -> Result<()> {
+    let (_, context) = get_device_context()?;
 
     // Create a command_queue on the Context's device
     let queue =
@@ -100,8 +92,6 @@ pub fn basic(kernel_name: &str, source: &str) -> Result<()> {
     let end_time = kernel_event.profiling_command_end()?;
     let duration = end_time - start_time;
     println!("kernel execution duration (ns): {duration}");
-
-    
 
     Ok(())
 }

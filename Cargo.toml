@@ -7,4 +7,5 @@ edition = "2021"
 
 [dependencies]
 anyhow = "1.0.81"
+image = "0.25.0"
 opencl3 = "0.9.5"
