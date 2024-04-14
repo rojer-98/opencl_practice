@@ -1,14 +1,18 @@
 mod basic;
 mod common;
+mod compile;
 mod image_compute;
 mod svm;
 
 use anyhow::Result;
 use image::{ImageBuffer, ImageFormat, Rgba};
 
-use crate::{basic::basic, image_compute::image, svm::svm};
+use crate::{basic::basic, compile::compile, image_compute::image, svm::svm};
 
 fn main() -> Result<()> {
+    println!("Run basic decompile");
+    compile("saxpy_float", include_str!("./basic/basic.cl"))?;
+
     println!("Run basic");
     basic("saxpy_float", include_str!("./basic/basic.cl"))?;
 

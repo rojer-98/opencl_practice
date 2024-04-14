@@ -9,3 +9,5 @@ edition = "2021"
 anyhow = "1.0.81"
 image = "0.25.0"
 opencl3 = { version =  "0.9.5", features = [ "cl_intel_unified_shared_memory" ] }
+rspirv = "0.12.0"
+spirv = "0.3.0"
